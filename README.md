@@ -1,52 +1,69 @@
 # epson-setup
 
 One-shot installer for a networked **Epson EcoTank M3170** (and similar
-driverless Epson multifunctions) on Debian/Ubuntu Linux.
+driverless Epson multifunctions) on Linux.
 
 Configures **printing** (IPP Everywhere) and **scanning** (eSCL/AirScan,
 including the ADF) — no proprietary Epson packages required.
 
+| Distro family | Script |
+|---|---|
+| Debian / Ubuntu / Mint / Pop!_OS | `setup.sh` |
+| Fedora / RHEL / Rocky / Alma     | `setup-fedora.sh` |
+
 ## Quick start
+
+**Debian/Ubuntu:**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xthakila/epson-setup/main/setup.sh | sudo bash
 ```
 
-or:
+**Fedora/RHEL:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xthakila/epson-setup/main/setup-fedora.sh | sudo bash
+```
+
+or clone:
 
 ```bash
 git clone https://github.com/xthakila/epson-setup.git
 cd epson-setup
-sudo ./setup.sh
+sudo ./setup.sh           # Debian/Ubuntu
+sudo ./setup-fedora.sh    # Fedora/RHEL
 ```
 
 ## Options
 
+Both scripts accept the same flags:
+
 ```
-sudo ./setup.sh                       # auto-discover via mDNS
-sudo ./setup.sh --ip 192.168.1.50     # skip mDNS, use this IP
-sudo ./setup.sh --queue MyPrinter     # custom CUPS queue name
-sudo ./setup.sh --match 'EPSON.*M3170' # change the mDNS name pattern
+sudo ./setup.sh                          # auto-discover via mDNS
+sudo ./setup.sh --ip 192.168.1.50        # skip mDNS, use this IP
+sudo ./setup.sh --queue MyPrinter        # custom CUPS queue name
+sudo ./setup.sh --match 'EPSON.*M3170'   # change the mDNS name pattern
 ```
 
-The script is idempotent — safe to re-run.
+The scripts are idempotent — safe to re-run.
 
-## What it installs
+## What gets installed
 
-- **CUPS** + `cups-browsed` + `cups-ipp-utils` (printing)
-- **Avahi** (mDNS auto-discovery)
-- **SANE** + `sane-airscan` + `libsane1` (scanning; `escl` backend for ADF)
-- `simple-scan` GUI, `system-config-printer`, `printer-driver-cups-pdf`
+- **CUPS** + `cups-browsed` (driverless IPP Everywhere printing)
+- **Avahi** (mDNS auto-discovery; `nss-mdns` on Fedora)
+- **SANE** + `sane-airscan` (scanning; uses `escl` backend for ADF)
+- `simple-scan` GUI, `system-config-printer`, `cups-pdf`
 
-## What it does
+## What the scripts do
 
-1. Installs the packages above.
-2. Enables `cups`, `cups-browsed`, `avahi-daemon`.
-3. Adds the invoking user to the `lp`, `lpadmin`, `scanner` groups.
-4. Discovers the printer over mDNS (or uses `--ip`).
-5. Creates a CUPS queue with the driverless **IPP Everywhere** model.
-6. Sets it as the default printer if none is configured yet.
-7. Verifies the scanner shows up in `scanimage -L`.
+1. Install the packages above.
+2. Enable `cups`, `cups-browsed`, `avahi-daemon`.
+3. On Fedora: allow the `mdns` service in firewalld if it's active.
+4. Add the invoking user to `lp`, `scanner` (and `lpadmin` on Debian).
+5. Discover the printer over mDNS (or use `--ip`).
+6. Create a CUPS queue with the driverless **IPP Everywhere** model.
+7. Set it as the default printer.
+8. Verify the scanner shows up in `scanimage -L`.
 
 ## Verifying
 
@@ -67,11 +84,15 @@ simple-scan                               # GUI scan (run as your user)
   printer's sensor will report `ScannerAdfEmpty`.
 - Requires the printer and the PC to be on the same L2 network for mDNS
   auto-discovery. Otherwise pass `--ip`.
+- On RHEL/Rocky/Alma, `sane-airscan` lives in EPEL; the Fedora script
+  enables EPEL automatically if needed.
 
 ## Compatibility
 
-Tested on Ubuntu 25.10. Targets any Debian-family distro with apt
-(Debian 12+, Ubuntu 22.04+, Mint, Pop!_OS, etc.).
+- Debian/Ubuntu script: tested on Ubuntu 25.10; works on Debian 12+,
+  Ubuntu 22.04+, Mint, Pop!_OS.
+- Fedora script: targets Fedora 39+; works on RHEL/Rocky/Alma 9+ (with
+  EPEL).
 
 Other driverless Epson EcoTank / WorkForce models that advertise
 IPP Everywhere + eSCL over mDNS should also work — adjust `--match`
