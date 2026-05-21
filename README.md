@@ -65,13 +65,37 @@ The scripts are idempotent — safe to re-run.
 7. Set it as the default printer.
 8. Verify the scanner shows up in `scanimage -L`.
 
-## Verifying
+## Using the printer and scanner (for everyone)
+
+**Printing**: nothing special — print from any app (LibreOffice, Firefox,
+GIMP, etc.) and pick **EPSON_M3170_Series** in the print dialog. It's
+already the default after running the setup.
+
+**Scanning**: open **Document Scanner** (the `simple-scan` app) from
+your application menu — no terminal needed.
+
+In Document Scanner:
+
+1. Click the ☰ menu → **Preferences**.
+2. **Scanner**: pick the `escl:` entry for the EPSON M3170 (more
+   reliable than the `airscan:` entry for the ADF).
+3. **Document type**: Text / Photo / Color as appropriate.
+4. Close Preferences. Place pages **face-up, top-edge in** in the ADF
+   (or a page face-down on the platen).
+5. Click the dropdown next to the **Scan** button → choose
+   **All Pages from Feeder** (ADF) or **Single Page** (platen).
+6. Hit **Scan**. When done, **Save As** → PDF, JPEG, PNG.
+
+For multi-page documents, ADF + "All Pages from Feeder" + Save as PDF
+gives you a single searchable file.
+
+## Verifying from the terminal (advanced)
 
 ```bash
 lpstat -p -d                              # printer status
 lp /usr/share/cups/data/testprint         # CUPS test page
 scanimage -L                              # list scanners
-simple-scan                               # GUI scan (run as your user)
+simple-scan                               # launch the GUI from a terminal
 ```
 
 ## Notes
