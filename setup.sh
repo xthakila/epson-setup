@@ -72,7 +72,7 @@ PKGS=(
   cups cups-client cups-browsed cups-filters cups-ipp-utils
   avahi-daemon avahi-utils
   sane sane-utils sane-airscan libsane1
-  simple-scan
+  simple-scan gscan2pdf
   system-config-printer
   printer-driver-cups-pdf
 )

@@ -52,7 +52,8 @@ The scripts are idempotent — safe to re-run.
 - **CUPS** + `cups-browsed` (driverless IPP Everywhere printing)
 - **Avahi** (mDNS auto-discovery; `nss-mdns` on Fedora)
 - **SANE** + `sane-airscan` (scanning; uses `escl` backend for ADF)
-- `simple-scan` GUI, `system-config-printer`, `cups-pdf`
+- `simple-scan` GUI (minimal), `gscan2pdf` (multi-page PDF + OCR),
+  `system-config-printer`, `cups-pdf`
 
 ## What the scripts do
 
@@ -87,7 +88,20 @@ In Document Scanner:
 6. Hit **Scan**. When done, **Save As** → PDF, JPEG, PNG.
 
 For multi-page documents, ADF + "All Pages from Feeder" + Save as PDF
-gives you a single searchable file.
+gives you a single PDF file.
+
+### Want more control? Use `gscan2pdf`
+
+`gscan2pdf` is also installed and offers:
+
+- Per-page DPI selection and finer scan options
+- Multi-page PDF assembly with page reordering / rotation / deletion
+- Optional **OCR** (install `tesseract` separately) for searchable PDFs
+- Save to PDF, DjVu, TIFF, JPEG, PNG
+
+Launch it from the app menu as **gscan2pdf** (or run `gscan2pdf` in a
+terminal). Recommended whenever you're digitising paperwork that needs
+to be searchable or archived.
 
 ## Verifying from the terminal (advanced)
 
