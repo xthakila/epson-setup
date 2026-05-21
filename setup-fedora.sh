@@ -80,6 +80,7 @@ PKGS=(
   avahi avahi-tools nss-mdns
   sane-backends sane-backends-libs sane-airscan
   simple-scan gscan2pdf
+  djvulibre unpaper pdftk
   system-config-printer
   cups-pdf
 )

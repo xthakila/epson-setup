@@ -73,6 +73,7 @@ PKGS=(
   avahi-daemon avahi-utils
   sane sane-utils sane-airscan libsane1
   simple-scan gscan2pdf
+  djvulibre-bin unpaper pdftk-java
   system-config-printer
   printer-driver-cups-pdf
 )
